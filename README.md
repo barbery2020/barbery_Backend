@@ -1,3 +1,3 @@
-# contact-keeper
+# Barbery-API
 
-This is full stack React app for keeping contacts
+Barbery backend
