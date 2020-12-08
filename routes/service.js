@@ -1,13 +1,29 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const config = require("config");
 const auth = require("../middleware/barberAuth");
 const { check, validationResult } = require("express-validator");
 
 const Service = require("../models/Service");
 
+// @route   GET api/service
+// @desc    Get a barbers all services
+// @access  Private
+router.get("/", auth, async (req, res) => {
+  try {
+    const barber = req.barber.id;
+    const services = await Service.find({ barber }).sort({
+      date: -1,
+    });
+    res.json(services);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   POST api/services
+// @desc    Add new service
+// @access  Private
 router.post(
   "/",
   [
@@ -34,12 +50,12 @@ router.post(
     const { name, cost, picture, status, description, category } = req.body;
 
     try {
-      const service = await Service.findOne({ name });
-      if (service) {
+      let checkIfService = await Service.findOne({ name });
+      if (checkIfService) {
         return res.status(400).json({ msg: "Service already exists" });
       }
 
-      service = new Service({
+      const newService = new Service({
         name,
         cost,
         picture,
@@ -48,7 +64,7 @@ router.post(
         category,
         barber: req.barber.id,
       });
-      const service = await service.save();
+      const service = await newService.save();
       res.json(service);
     } catch (err) {
       console.log(err.message);
@@ -56,5 +72,68 @@ router.post(
     }
   }
 );
+
+// @route   PUT api/service/:id
+// @desc    Update service
+// @access  Private
+router.put("/:id", auth, async (req, res) => {
+  const { name, cost, picture, status, description, category } = req.body;
+
+  // Build service object
+  const serviceFields = {};
+  if (name) serviceFields.name = name;
+  if (cost) serviceFields.cost = cost;
+  if (picture) serviceFields.picture = picture;
+  if (status) serviceFields.status = status;
+  if (description) serviceFields.description = description;
+  if (category) serviceFields.category = category;
+
+  try {
+    let service = await Service.findById(req.params.id);
+
+    if (!service) return res.status(404).json({ msg: "Service not found" });
+
+    // Make sure barber owns service
+    if (service.barber.toString() !== req.barber.id) {
+      return res.status(401).json({ msg: "Not authorized" });
+    }
+
+    service = await Service.findByIdAndUpdate(
+      req.params.id,
+      { $set: serviceFields },
+      { new: true }
+    );
+
+    res.json(service);
+  } catch (err) {
+    console.error(er.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   DELETE api/service/:id
+// @desc    Delete service
+// @access  Private
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    let service = await Service.findById(req.params.id);
+
+    if (!service) return res.status(404).json({ msg: "Service not found" });
+
+    // Make sure user owns service
+    if (service.barber.toString() !== req.barber.id) {
+      return res.status(401).json({ msg: "Not authorized" });
+    }
+
+    await Service.findByIdAndRemove(req.params.id);
+
+    res.json({ msg: "Service removed" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+module.exports = router;
 
 //post route service

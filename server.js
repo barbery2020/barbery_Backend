@@ -16,11 +16,17 @@ app.use(express.json({ extended: false }));
 // });
 
 //Routes
+app.use("/api/promo", require("./routes/promo"));
+app.use("/api/adminAuth", require("./routes/adminAuth"));
+app.use("/api/admin", require("./routes/admin"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/barberAuth", require("./routes/barberAuth"));
 app.use("/api/barber", require("./routes/barber"));
 app.use("/api/service", require("./routes/service"));
+app.use("/api/package", require("./routes/package"));
+app.use("/api/specialist", require("./routes/specialist"));
+app.use("/api/appointment", require("./routes/appointment"));
 
 // Serve static assets in production
 
