@@ -83,7 +83,7 @@ router.put("/:id", auth, async (req, res) => {
   if (description) specialistFields.description = description;
 
   try {
-    let specialist = await specialist.findById(req.params.id);
+    let specialist = await Specialist.findById(req.params.id);
 
     if (!specialist)
       return res.status(404).json({ msg: "Specialist not found" });

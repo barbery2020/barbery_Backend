@@ -12,6 +12,18 @@ const BarberSchema = mongoose.Schema({
   shopTitle: {
     type: String,
   },
+  openTiming: {
+    type: String,
+    default: "10am",
+  },
+  closeTiming: {
+    type: String,
+    default: "10pm",
+  },
+  days: {
+    type: Array,
+    default: [],
+  },
   email: {
     type: String,
     required: true,
