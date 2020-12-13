@@ -1,4 +1,0 @@
-{
-    "mongoURI" : "mongodb+srv://humzajameel:Error500@barberydb.gwhxl.mongodb.net/barberyDB?retryWrites=true&w=majority",
-    "jwtSecret": "barberySecret"
-}
