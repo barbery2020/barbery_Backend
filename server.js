@@ -12,7 +12,7 @@ connectDB();
 app.use(express.json({ extended: false }));
 
 app.get("/", (req, res) => {
-  res.send({ msg: "Welcome to the Barbery API..." });
+  res.send("Welcome to the Barbery API...");
 });
 
 //Routes
