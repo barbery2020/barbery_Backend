@@ -81,7 +81,7 @@ router.post(
 // @route   PUT api/specialist/:id
 // @desc    Update specialist
 // @access  Private
-router.put("/:id", auth, async (req, res) => {
+router.put("/", auth, async (req, res) => {
   const {
     firstName,
     lastName,
@@ -115,12 +115,12 @@ router.put("/:id", auth, async (req, res) => {
   if (latitude) barberFields.latitude = latitude;
 
   try {
-    let barber = await Barber.findById(req.params.id);
+    let barber = await Barber.findById(req.barber.id);
 
     if (!barber) return res.status(404).json({ msg: "Barber not found" });
 
     barber = await Barber.findByIdAndUpdate(
-      req.params.id,
+      req.barber.id,
       { $set: barberFields },
       { new: true }
     );
