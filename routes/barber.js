@@ -78,8 +78,8 @@ router.post(
   }
 );
 
-// @route   PUT api/specialist/:id
-// @desc    Update specialist
+// @route   PUT api/barber
+// @desc    Update barber
 // @access  Private
 router.put("/", auth, async (req, res) => {
   const {
@@ -92,7 +92,6 @@ router.put("/", auth, async (req, res) => {
     days,
     email,
     phoneNo,
-    password,
     image,
     longitude,
     latitude,
@@ -109,8 +108,10 @@ router.put("/", auth, async (req, res) => {
   if (days) barberFields.days = days;
   if (email) barberFields.email = email;
   if (phoneNo) barberFields.phoneNo = phoneNo;
-  if (password) barberFields.password = password;
-  if (image) barberFields.image = image;
+  if (image) {
+    const buff = Buffer.from(image.data, "base64");
+    barberFields.image = { type: image.type, data: buff };
+  }
   if (longitude) barberFields.longitude = longitude;
   if (latitude) barberFields.latitude = latitude;
 
@@ -124,6 +125,10 @@ router.put("/", auth, async (req, res) => {
       { $set: barberFields },
       { new: true }
     );
+    barber.image = {
+      ...barber.image,
+      data: barber.image.data.toString("base64"),
+    };
 
     res.json(barber);
   } catch (err) {

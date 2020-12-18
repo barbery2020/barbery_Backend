@@ -47,8 +47,8 @@ const BarberSchema = mongoose.Schema({
     default: Date.now,
   },
   image: {
-    type: Buffer,
-    default: null,
+    type: Object,
+    default: {},
   },
   longitude: {
     type: String,
