@@ -89,7 +89,6 @@ router.put("/", auth, async (req, res) => {
     address,
     openTiming,
     closeTiming,
-    days,
     email,
     phoneNo,
     image,
@@ -105,7 +104,6 @@ router.put("/", auth, async (req, res) => {
   if (address) barberFields.address = address;
   if (openTiming) barberFields.openTiming = openTiming;
   if (closeTiming) barberFields.closeTiming = closeTiming;
-  if (days) barberFields.days = days;
   if (email) barberFields.email = email;
   if (phoneNo) barberFields.phoneNo = phoneNo;
   if (image) {

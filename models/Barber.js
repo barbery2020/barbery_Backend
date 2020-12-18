@@ -20,10 +20,6 @@ const BarberSchema = mongoose.Schema({
     type: String,
     default: "10pm",
   },
-  days: {
-    type: Array,
-    default: [],
-  },
   email: {
     type: String,
     required: true,
