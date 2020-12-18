@@ -32,7 +32,7 @@ const BarberSchema = mongoose.Schema({
   },
   address: {
     type: String,
-    default: "address",
+    default: "",
   },
   password: {
     type: String,
