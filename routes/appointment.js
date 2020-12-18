@@ -34,7 +34,6 @@ router.post(
       check("date", "Please pick a valid date for your appointment")
         .not()
         .isEmpty(),
-      check("category", "Please select service category").not().isEmpty(),
       check("services", "Please select services..").not().isEmpty(),
       check("specialist", "Please select specialist..").not().isEmpty(),
     ],
@@ -45,11 +44,20 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { timing, date, category, services, specialist, barber } = req.body;
+    const {
+      bill,
+      timing,
+      date,
+      category,
+      services,
+      specialist,
+      barber,
+    } = req.body;
     console.log(barber);
 
     try {
       const newAppointment = new Appointment({
+        bill,
         timing,
         date,
         category,

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "server": "nodemon server.js",
-    "dev": "npm run server"
+    "dev": "yarn run server"
   },
   "keywords": [],
   "author": "",

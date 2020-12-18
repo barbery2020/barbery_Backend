@@ -5,6 +5,9 @@ const AppointmentSchema = mongoose.Schema({
     type: String,
     default: "",
   },
+  bill: {
+    type: Number,
+  },
   timing: {
     type: String,
     required: true,

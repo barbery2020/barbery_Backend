@@ -7,7 +7,10 @@ const auth = require("../middleware/barberAuth");
 const { check, validationResult } = require("express-validator");
 
 const Barber = require("../models/Barber");
-
+const Appointment = require("../models/Appointment");
+const Specialist = require("../models/Specialist");
+const Services = require("../models/Service");
+const Packages = require("../models/Package");
 router.post(
   "/",
   [
@@ -125,6 +128,56 @@ router.put("/:id", auth, async (req, res) => {
     res.json(barber);
   } catch (err) {
     console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   GET api/auth
+// @desc    Get logged in barber
+// @access  Private
+router.get("/records", auth, async (req, res) => {
+  try {
+    const records = await Appointment.find({
+      barber: req.barber.id,
+    });
+    const specialist = await Specialist.find({
+      barber: req.barber.id,
+    });
+    let services = await Services.find({
+      barber: req.barber.id,
+    });
+    let packages = await Packages.find({
+      barber: req.barber.id,
+    });
+    const totalCustomer = records.length;
+    let totalSpecialist = specialist.length;
+    let totalServices = services.length;
+    let totalPackages = packages.length;
+    let bill = 0;
+    let appointmentCompleted = 0;
+    let appointmentPending = 0;
+    for (let i = 0; i < records.length; i++) {
+      bill = bill + records[i].bill;
+      appointmentPending =
+        records[i].status === true
+          ? appointmentPending + 1
+          : appointmentPending + 0;
+      appointmentCompleted =
+        records[i].status === false
+          ? appointmentCompleted + 1
+          : appointmentCompleted + 0;
+    }
+    res.json({
+      totalCustomer,
+      totalSpecialist,
+      appointmentCompleted,
+      appointmentPending,
+      totalServices,
+      totalPackages,
+      bill,
+    });
+  } catch (err) {
+    console.log(err.message);
     res.status(500).send("Server Error");
   }
 });
