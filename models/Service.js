@@ -10,8 +10,8 @@ const ServiceSchema = mongoose.Schema({
     required: true,
   },
   picture: {
-    type: String,
-    required: true,
+    type: Buffer,
+    default: null,
   },
   description: {
     type: String,
