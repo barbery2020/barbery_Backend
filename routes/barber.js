@@ -170,7 +170,8 @@ router.get("/records", auth, async (req, res) => {
           ? appointmentCompleted + 1
           : appointmentCompleted + 0;
     }
-    res.json({
+    res.status(200).json({
+      success: true,
       totalCustomer,
       totalSpecialist,
       appointmentCompleted,
