@@ -64,11 +64,11 @@ router.post(
       });
       const buff = Buffer.from(picture.data, "base64");
       newPackage.picture = { type: picture.type, data: buff };
+      let package = await newPackage.save();
       newPackage.picture = {
         ...package.picture,
         data: package.picture.data.toString("base64"),
       };
-      const package = await newPackage.save();
       res.json(package);
     } catch (err) {
       console.log(err.message);
