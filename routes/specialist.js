@@ -87,7 +87,7 @@ router.put("/:id", auth, async (req, res) => {
     const buff = Buffer.from(image.data, "base64");
     specialistFields.image = { type: image.type, data: buff };
   }
-  if (status) specialistFields.status = status;
+  if (status !== undefined) specialistFields.status = status;
   if (description) specialistFields.description = description;
 
   try {
