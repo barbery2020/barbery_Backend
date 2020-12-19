@@ -32,6 +32,7 @@ app.use("/api/package", require("./routes/package"));
 app.use("/api/specialist", require("./routes/specialist"));
 app.use("/api/appointment", require("./routes/appointment"));
 app.use("/api/review", require("./routes/review"));
+app.use("/api/collection", require("./routes/collection"));
 
 // Serve static assets in production
 
