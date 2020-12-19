@@ -84,7 +84,7 @@ router.post(
 // @access  Private
 router.put("/:id", auth, async (req, res) => {
   const { name, cost, picture, status, description, category } = req.body;
-
+  console.log(status);
   // Build service object
   const serviceFields = {};
   if (name) serviceFields.name = name;
@@ -93,7 +93,7 @@ router.put("/:id", auth, async (req, res) => {
     const buff = Buffer.from(picture.data, "base64");
     serviceFields.picture = { type: picture.type, data: buff };
   }
-  if (status) serviceFields.status = status;
+  if (status !== undefined) serviceFields.status = status;
   if (description) serviceFields.description = description;
   if (category) serviceFields.category = category;
 
