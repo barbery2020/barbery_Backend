@@ -11,7 +11,7 @@ const Package = require("../models/Package");
 router.get("/", auth, async (req, res) => {
   try {
     const barber = req.barber.id;
-    const packages = await Service.find({ barber }).sort({
+    const packages = await Package.find({ barber }).sort({
       date: -1,
     });
     res.json(packages);
