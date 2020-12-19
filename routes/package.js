@@ -91,7 +91,7 @@ router.put("/:id", auth, async (req, res) => {
     const buff = Buffer.from(picture.data, "base64");
     packageFields.picture = { type: picture.type, data: buff };
   }
-  if (status !== undefined) serviceFields.status = status;
+  if (status !== undefined) packageFields.status = status;
   if (description) packageFields.description = description;
 
   try {
