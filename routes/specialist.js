@@ -52,7 +52,6 @@ router.post(
       if (checkIfSpecialist) {
         return res.status(400).json({ msg: "Specialist already exists" });
       }
-
       const newSpecialist = new Specialist({
         name,
         picture,
@@ -60,7 +59,13 @@ router.post(
         description,
         barber: req.barber.id,
       });
-      const specialist = await newSpecialist.save();
+      const buff = Buffer.from(picture.data, "base64");
+      newSpecialist.picture = { type: picture.type, data: buff };
+      let specialist = await newSpecialist.save();
+      newSpecialist.picture = {
+        ...specialist.picture,
+        data: specialist.picture.data.toString("base64"),
+      };
       res.json(specialist);
     } catch (err) {
       console.log(err.message);
@@ -78,7 +83,10 @@ router.put("/:id", auth, async (req, res) => {
   // Build specialist object
   const specialistFields = {};
   if (name) specialistFields.name = name;
-  if (picture) specialistFields.picture = picture;
+  if (picture) {
+    const buff = Buffer.from(image.data, "base64");
+    specialistFields.image = { type: image.type, data: buff };
+  }
   if (status) specialistFields.status = status;
   if (description) specialistFields.description = description;
 
@@ -98,7 +106,10 @@ router.put("/:id", auth, async (req, res) => {
       { $set: specialistFields },
       { new: true }
     );
-
+    specialist.image = {
+      ...specialist.image,
+      data: specialist.image.data.toString("base64"),
+    };
     res.json(specialist);
   } catch (err) {
     console.error(er.message);

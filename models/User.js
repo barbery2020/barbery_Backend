@@ -24,8 +24,8 @@ const UserSchema = mongoose.Schema({
     required: true,
   },
   image: {
-    type: Buffer,
-    default: null,
+    type: Object,
+    default: {},
   },
   date: {
     type: Date,
