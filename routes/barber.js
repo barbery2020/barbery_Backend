@@ -118,15 +118,15 @@ router.put("/", auth, async (req, res) => {
 
     if (!barber) return res.status(404).json({ msg: "Barber not found" });
 
+    barber.image = {
+      ...barber.image,
+      data: barber.image.data.toString("base64"),
+    };
     barber = await Barber.findByIdAndUpdate(
       req.barber.id,
       { $set: barberFields },
       { new: true }
     );
-    barber.image = {
-      ...barber.image,
-      data: barber.image.data.toString("base64"),
-    };
 
     res.json(barber);
   } catch (err) {
