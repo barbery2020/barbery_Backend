@@ -97,7 +97,7 @@ router.put("/:id", auth, async (req, res) => {
   try {
     let package = await Package.findById(req.params.id);
 
-    if (!package) return res.status(404).json({ msg: "Service not found" });
+    if (!package) return res.status(404).json({ msg: "Package not found" });
 
     // Make sure barber owns package
     if (package.barber.toString() !== req.barber.id) {
@@ -126,7 +126,7 @@ router.delete("/:id", auth, async (req, res) => {
   try {
     let package = await Package.findById(req.params.id);
 
-    if (!package) return res.status(404).json({ msg: "Service not found" });
+    if (!package) return res.status(404).json({ msg: "Package not found" });
 
     // Make sure user owns package
     if (package.barber.toString() !== req.barber.id) {
