@@ -15,11 +15,11 @@ const BarberSchema = mongoose.Schema({
   },
   openTiming: {
     type: String,
-    default: "10am",
+    default: "00:00",
   },
   closeTiming: {
     type: String,
-    default: "10pm",
+    default: "00:00",
   },
   email: {
     type: String,
