@@ -89,7 +89,10 @@ router.put("/:id", auth, async (req, res) => {
   const serviceFields = {};
   if (name) serviceFields.name = name;
   if (cost) serviceFields.cost = cost;
-  if (picture) serviceFields.picture = picture;
+  if (picture) {
+    const buff = Buffer.from(picture.data, "base64");
+    serviceFields.picture = { type: picture.type, data: buff };
+  }
   if (status) serviceFields.status = status;
   if (description) serviceFields.description = description;
   if (category) serviceFields.category = category;
@@ -109,7 +112,10 @@ router.put("/:id", auth, async (req, res) => {
       { $set: serviceFields },
       { new: true }
     );
-
+    serviceFields.picture = {
+      ...service.picture,
+      data: service.picture.data.toString("base64"),
+    };
     res.json(service);
   } catch (err) {
     console.error(er.message);

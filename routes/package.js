@@ -87,7 +87,10 @@ router.put("/:id", auth, async (req, res) => {
   const packageFields = {};
   if (name) packageFields.name = name;
   if (cost) packageFields.cost = cost;
-  if (picture) packageFields.picture = picture;
+  if (picture) {
+    const buff = Buffer.from(picture.data, "base64");
+    packageFields.picture = { type: picture.type, data: buff };
+  }
   if (status) packageFields.status = status;
   if (description) packageFields.description = description;
 
@@ -100,13 +103,15 @@ router.put("/:id", auth, async (req, res) => {
     if (package.barber.toString() !== req.barber.id) {
       return res.status(401).json({ msg: "Not authorized" });
     }
-
     package = await Package.findByIdAndUpdate(
       req.params.id,
       { $set: packageFields },
       { new: true }
     );
-
+    packageFields.picture = {
+      ...package.picture,
+      data: package.picture.data.toString("base64"),
+    };
     res.json(package);
   } catch (err) {
     console.error(er.message);
