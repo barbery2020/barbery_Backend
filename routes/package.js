@@ -62,6 +62,12 @@ router.post(
         description,
         barber: req.barber.id,
       });
+      const buff = Buffer.from(picture.data, "base64");
+      newPackage.picture = { type: picture.type, data: buff };
+      newPackage.picture = {
+        ...package.picture,
+        data: package.picture.data.toString("base64"),
+      };
       const package = await newPackage.save();
       res.json(package);
     } catch (err) {

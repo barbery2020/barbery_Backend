@@ -10,8 +10,8 @@ const PackageSchema = mongoose.Schema({
     required: true,
   },
   picture: {
-    type: Buffer,
-    default: null,
+    type: Object,
+    default: {},
   },
   description: {
     type: String,

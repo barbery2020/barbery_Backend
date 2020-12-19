@@ -170,16 +170,15 @@ router.get("/records", auth, async (req, res) => {
           ? appointmentCompleted + 1
           : appointmentCompleted + 0;
     }
-    res.status(200).json({
-      success: true,
-      totalCustomer,
-      totalSpecialist,
-      appointmentCompleted,
-      appointmentPending,
-      totalServices,
-      totalPackages,
-      bill,
-    });
+    res.status(200).json([
+      { title: "Total Customer", value: totalCustomer },
+      { title: "Total Specialist", value: totalSpecialist },
+      { title: "Appointments Compeleted", value: appointmentCompleted },
+      { title: "Appointments Pending", value: appointmentPending },
+      { title: "Total Services", value: totalServices },
+      { title: "Total Packages", value: totalPackages },
+      { title: "Total Revenue", value: bill },
+    ]);
   } catch (err) {
     console.log(err.message);
     res.status(500).send("Server Error");
