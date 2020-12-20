@@ -12,6 +12,23 @@ const Review = require("../models/Review");
 // @desc    Register a user
 // @access  Public
 
+router.get("/averageRating/:id", auth, async (req, res) => {
+  try {
+    const barber = req.params.id;
+    const reviews = await Review.find({ barber });
+    let averageRating = 0;
+    let total = 0;
+    for (let i = 0; i < reviews.length; i++) {
+      total = total + reviews[i].stars;
+    }
+    averageRating = total / reviews.length;
+    res.status(200).json([{ title: "Ratings", value: averageRating }]);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 router.get("/allSaloons", auth, async (req, res) => {
   try {
     const barber = await Barber.find(); //exclude password

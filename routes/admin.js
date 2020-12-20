@@ -81,19 +81,19 @@ router.post(
 router.get("/records", auth, async (req, res) => {
   try {
     const appointmentRecords = await Appointment.find();
-    console.log(await appointmentRecords.find());
-    const totalClients = await User.find();
-    const totalBarbers = await Barber.find();
+    const totalClients = await (await User.find()).length;
+    const totalBarbers = await (await Barber.find()).length;
     let totalRevenue = 0;
     const totalAppointments = appointmentRecords.length;
     let appointmentCompleted = 0;
     let appointmentPending = 0;
     for (let i = 0; i < totalAppointments; i++) {
-      if (!appointmentRecords[i].status === false) {
+      if (appointmentRecords[i].status !== false) {
         appointmentCompleted++;
       } else {
         appointmentPending++;
       }
+      console.log(appointmentRecords[i].bill);
       totalRevenue += appointmentRecords[i].bill;
     }
     res.status(200).json([
@@ -102,7 +102,7 @@ router.get("/records", auth, async (req, res) => {
       { title: "Appointments Compeleted", value: appointmentCompleted },
       { title: "Appointments Pending", value: appointmentPending },
       { title: "Total Appointments", value: totalAppointments },
-      { title: "Total Revenue", value: bill },
+      { title: "Total Revenue", value: totalRevenue },
     ]);
   } catch (err) {
     console.log(err.message);
