@@ -33,6 +33,7 @@ app.use("/api/specialist", require("./routes/specialist"));
 app.use("/api/appointment", require("./routes/appointment"));
 app.use("/api/review", require("./routes/review"));
 app.use("/api/collection", require("./routes/collection"));
+app.use("/api/saloon", require("./routes/saloon"));
 
 // Serve static assets in production
 
