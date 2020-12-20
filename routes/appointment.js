@@ -36,6 +36,7 @@ router.post(
         .isEmpty(),
       check("services", "Please select services..").not().isEmpty(),
       check("specialist", "Please select specialist..").not().isEmpty(),
+      check("barber", "Please select barber..").not().isEmpty(),
     ],
   ],
   async (req, res) => {
@@ -53,7 +54,7 @@ router.post(
       specialist,
       barber,
     } = req.body;
-    console.log(barber);
+    // console.log(barber);
 
     try {
       const newAppointment = new Appointment({
@@ -75,6 +76,33 @@ router.post(
   }
 );
 
+router.put("/:id", barberAuth, async (req, res) => {
+  const { status } = req.body;
+  const appointmentFields = {};
+  if (status !== undefined) appointmentFields.status = status;
+  try {
+    let appointment = await Appointment.findById(req.params.id);
+
+    if (!appointment)
+      return res.status(404).json({ msg: "Appointment not found" });
+
+    // Make sure barber owns appointment
+    if (appointment.barber.toString() !== req.barber.id) {
+      return res.status(401).json({ msg: "Not authorized" });
+    }
+
+    appointment = await Appointment.findByIdAndUpdate(
+      req.params.id,
+      { $set: appointmentFields },
+      { new: true }
+    );
+    res.json(appointment);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = router;
 
-//post route service
+//post route appointment

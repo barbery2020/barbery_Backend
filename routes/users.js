@@ -7,10 +7,22 @@ const auth = require("../middleware/auth");
 const { check, validationResult } = require("express-validator");
 
 const User = require("../models/User");
+const Barber = require("../models/Barber");
 
 // @route   POST api/users
 // @desc    Register a user
 // @access  Public
+
+router.get("/allSaloons", auth, async (req, res) => {
+  try {
+    const barber = await Barber.find(); //exclude password
+    res.json(barber);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 router.post(
   "/",
   [

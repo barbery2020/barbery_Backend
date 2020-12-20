@@ -3,9 +3,17 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const auth = require("../middleware/adminAuth");
 const { check, validationResult } = require("express-validator");
 
 const Admin = require("../models/Admin");
+const Barber = require("../models/Barber");
+const Appointment = require("../models/Appointment");
+const Specialist = require("../models/Specialist");
+const Services = require("../models/Service");
+const Packages = require("../models/Package");
+const Promos = require("../models/Promo");
+const User = require("../models/User");
 
 router.post(
   "/",
@@ -69,5 +77,37 @@ router.post(
     }
   }
 );
+
+router.get("/records", auth, async (req, res) => {
+  try {
+    const appointmentRecords = await Appointment.find();
+    console.log(await appointmentRecords.find());
+    const totalClients = await User.find();
+    const totalBarbers = await Barber.find();
+    let totalRevenue = 0;
+    const totalAppointments = appointmentRecords.length;
+    let appointmentCompleted = 0;
+    let appointmentPending = 0;
+    for (let i = 0; i < totalAppointments; i++) {
+      if (!appointmentRecords[i].status === false) {
+        appointmentCompleted++;
+      } else {
+        appointmentPending++;
+      }
+      totalRevenue += appointmentRecords[i].bill;
+    }
+    res.status(200).json([
+      { title: "Total Clients", value: totalClients },
+      { title: "Total Barbers", value: totalBarbers },
+      { title: "Appointments Compeleted", value: appointmentCompleted },
+      { title: "Appointments Pending", value: appointmentPending },
+      { title: "Total Appointments", value: totalAppointments },
+      { title: "Total Revenue", value: bill },
+    ]);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;
