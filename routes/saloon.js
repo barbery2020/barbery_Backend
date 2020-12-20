@@ -51,7 +51,20 @@ router.get("/saloonSpecialist/:id", auth, async (req, res) => {
   }
 });
 
-router.get("/saloonCollection/:id", auth, async (req, res) => {
+router.get("/saloonPackages/:id", auth, async (req, res) => {
+  try {
+    const barber = req.params.id;
+    const packages = await Package.find({ barber }).sort({
+      date: -1,
+    });
+    res.json(packages);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+router.get("/saloonCollections/:id", auth, async (req, res) => {
   try {
     const barber = req.params.id;
     const collections = await Collection.find({ barber }).sort({
