@@ -78,14 +78,14 @@ router.post(
 // @desc    Update specialist
 // @access  Private
 router.put("/:id", auth, async (req, res) => {
-  const { name, cost, picture, status, description } = req.body;
+  const { name, picture, status, description } = req.body;
 
   // Build specialist object
   const specialistFields = {};
   if (name) specialistFields.name = name;
   if (picture) {
-    const buff = Buffer.from(image.data, "base64");
-    specialistFields.image = { type: image.type, data: buff };
+    const buff = Buffer.from(picture.data, "base64");
+    specialistFields.picture = { type: picture.type, data: buff };
   }
   if (status !== undefined) specialistFields.status = status;
   if (description) specialistFields.description = description;
@@ -106,13 +106,13 @@ router.put("/:id", auth, async (req, res) => {
       { $set: specialistFields },
       { new: true }
     );
-    specialist.image = {
-      ...specialist.image,
-      data: specialist.image.data.toString("base64"),
+    specialist.picture = {
+      ...specialist.picture,
+      data: specialist.picture.data.toString("base64"),
     };
     res.json(specialist);
   } catch (err) {
-    console.error(er.message);
+    console.error(err.message);
     res.status(500).send("Server Error");
   }
 });
