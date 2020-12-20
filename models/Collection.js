@@ -5,10 +5,7 @@ const CollectionSchema = {
     type: Date,
     default: Date.now,
   },
-  data: Buffer,
-  type: {
-    type: String,
-  },
+  picture: Object,
   barber: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "barbers",

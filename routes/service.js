@@ -64,13 +64,13 @@ router.post(
         category,
         barber: req.barber.id,
       });
-      const buff = Buffer.from(picture.data, "base64");
-      newService.picture = { type: picture.type, data: buff };
+      // const buff = Buffer.from(picture.data, "base64");
+      // newService.picture = { type: picture.type, data: buff };
       let service = await newService.save();
-      newService.picture = {
-        ...service.picture,
-        data: service.picture.data.toString("base64"),
-      };
+      // newService.picture = {
+      //   ...service.picture,
+      //   data: service.picture.data.toString("base64"),
+      // };
       res.json(service);
     } catch (err) {
       console.log(err.message);
