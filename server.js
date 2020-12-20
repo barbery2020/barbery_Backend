@@ -9,12 +9,12 @@ connectDB();
 
 // Init Middleware
 //not needed if you are using body-parser
-// app.use(express.json({ extended: false,  }));
+// app.use(express.json({ extended: false}));
+app.use(cors());
 app.use(express.json({ limit: "100mb" }));
 app.use(
   express.urlencoded({ limit: "100mb", extended: true, parameterLimit: 100000 })
 );
-app.use(cors);
 app.get("/", (req, res) => {
   res.send("Welcome to the Barbery API...");
 });
