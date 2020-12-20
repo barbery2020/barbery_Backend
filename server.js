@@ -1,7 +1,7 @@
 const express = require("express");
 const connectDB = require("./config/db");
 const path = require("path");
-
+const cors = require("cors");
 const app = express();
 
 // Connect DB
@@ -14,7 +14,7 @@ app.use(express.json({ limit: "100mb" }));
 app.use(
   express.urlencoded({ limit: "100mb", extended: true, parameterLimit: 100000 })
 );
-
+app.use(cors);
 app.get("/", (req, res) => {
   res.send("Welcome to the Barbery API...");
 });

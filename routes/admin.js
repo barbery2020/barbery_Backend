@@ -97,12 +97,15 @@ router.get("/records", auth, async (req, res) => {
       totalRevenue += appointmentRecords[i].bill;
     }
     res.status(200).json([
-      { title: "Total Clients", value: totalClients },
-      { title: "Total Barbers", value: totalBarbers },
-      { title: "Appointments Compeleted", value: appointmentCompleted },
-      { title: "Appointments Pending", value: appointmentPending },
-      { title: "Total Appointments", value: totalAppointments },
-      { title: "Total Revenue", value: totalRevenue },
+      { title: "Total Clients", totalClients: totalClients },
+      { title: "Total Barbers", totalBarbers: totalBarbers },
+      {
+        title: "Appointments Compeleted",
+        appointmentCompleted: appointmentCompleted,
+      },
+      { title: "Appointments Pending", appointmentPending: appointmentPending },
+      { title: "Total Appointments", totalAppointments: totalAppointments },
+      { title: "Total Revenue", totalRevenue: totalRevenue },
     ]);
   } catch (err) {
     console.log(err.message);

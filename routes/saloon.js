@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
-
 const Barber = require("../models/Barber");
 const Service = require("../models/Service");
 const Specialist = require("../models/Specialist");
