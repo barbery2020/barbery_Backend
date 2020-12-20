@@ -78,7 +78,7 @@ router.post(
   }
 );
 
-router.get("/records", auth, async (req, res) => {
+router.get("/records", async (req, res) => {
   try {
     const appointmentRecords = await Appointment.find();
     const totalClients = await (await User.find()).length;
