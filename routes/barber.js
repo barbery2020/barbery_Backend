@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const auth = require("../middleware/barberAuth");
 const { check, validationResult } = require("express-validator");
-
 const Barber = require("../models/Barber");
 const Appointment = require("../models/Appointment");
 const Specialist = require("../models/Specialist");

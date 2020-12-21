@@ -82,9 +82,14 @@ router.get("/user", UserAuth, async (req, res) => {
 router.get("/barber", barberAuth, async (req, res) => {
   try {
     const barber = req.barber.id;
-    const appointments = await Appointment.find({ barber }).sort({
-      date: -1,
-    });
+    let appointments = await Appointment.find({ barber })
+      .sort({
+        date: -1,
+      })
+      .populate("specialist", "picture name")
+      .populate("services", "name cost")
+      .populate("review")
+      .populate("user", "firstName lastName image");
     res.json(appointments);
   } catch (err) {
     console.error(err.message);
