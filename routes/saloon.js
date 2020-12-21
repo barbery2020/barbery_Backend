@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
 const Barber = require("../models/Barber");
+const User = require("../models/User");
 const Service = require("../models/Service");
 const Specialist = require("../models/Specialist");
 const Collection = require("../models/Collection");
@@ -39,14 +40,11 @@ router.get("/allSaloons", auth, async (req, res) => {
   }
 });
 
-router.get("/barber/:id", auth, async (req, res) => {
+router.get("/barber/:id", async (req, res) => {
   try {
-    const id = req.params.id;
-    console.log(id);
-    const barber = await Barber.find({ id }).sort({
+    const barber = await Barber.findById(req.params.id).sort({
       date: -1,
     }); //exclude password
-    console.log(barber);
     res.json(barber);
   } catch (err) {
     console.log(err.message);
