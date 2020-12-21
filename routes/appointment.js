@@ -189,7 +189,7 @@ router.post(
         { $set: appointmentFields },
         { new: true }
       );
-      res.json(appointment);
+      res.json(review);
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");
