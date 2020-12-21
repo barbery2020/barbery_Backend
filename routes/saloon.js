@@ -55,7 +55,7 @@ router.get("/barber/:id", async (req, res) => {
 router.get("/saloonSpecialist/:id", auth, async (req, res) => {
   try {
     const barber = req.params.id;
-    const specialist = await Specialist.findById(barber).sort({
+    const specialist = await Specialist.find({ barber }).sort({
       date: -1,
     });
     res.json(specialist);
