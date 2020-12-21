@@ -160,7 +160,9 @@ router.get("/records", auth, async (req, res) => {
     let appointmentCompleted = 0;
     let appointmentPending = 0;
     for (let i = 0; i < records.length; i++) {
-      bill = bill + records[i].bill;
+      records[i].status === false
+        ? (bill = bill + records[i].bill)
+        : (bill = bill + 0);
       appointmentPending =
         records[i].status === true
           ? appointmentPending + 1
