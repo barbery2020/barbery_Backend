@@ -21,7 +21,8 @@ router.get("/user", UserAuth, async (req, res) => {
         date: -1,
       })
       .populate("specialist")
-      .populate("services");
+      .populate("services")
+      .populate("review");
     // let services = [];
 
     // appointments = await Promise.all(

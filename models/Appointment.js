@@ -37,6 +37,7 @@ const AppointmentSchema = mongoose.Schema({
   review: {
     type: mongoose.Schema.Types.ObjectId,
     default: null,
+    ref: "review",
   },
   // ref: "service",
 });
