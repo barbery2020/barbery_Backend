@@ -186,4 +186,23 @@ router.get("/records", auth, async (req, res) => {
   }
 });
 
+router.get("/review", auth, async (req, res) => {
+  try {
+    const barber = req.barber.id;
+    const appointments = await Appointment.find({ barber })
+      .where("review")
+      .ne(null)
+      .select("user review date")
+      .sort({
+        date: -1,
+      })
+      .populate("user", "firstName lastName image")
+      .populate("review");
+    res.json(appointments);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = router;
