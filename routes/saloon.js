@@ -16,7 +16,7 @@ const Package = require("../models/Package");
 router.get("/averageRating/:id", auth, async (req, res) => {
   try {
     const barber = req.params.id;
-    const reviews = await Review.find({ barber });
+    const reviews = await Review.findById(barber);
     let averageRating = 0;
     let total = 0;
     for (let i = 0; i < reviews.length; i++) {
@@ -55,7 +55,7 @@ router.get("/barber/:id", async (req, res) => {
 router.get("/saloonSpecialist/:id", auth, async (req, res) => {
   try {
     const barber = req.params.id;
-    const specialist = await Specialist.find({ barber }).sort({
+    const specialist = await Specialist.findById(barber).sort({
       date: -1,
     });
     res.json(specialist);
@@ -68,7 +68,7 @@ router.get("/saloonSpecialist/:id", auth, async (req, res) => {
 router.get("/saloonPackages/:id", auth, async (req, res) => {
   try {
     const barber = req.params.id;
-    const packages = await Package.find({ barber }).sort({
+    const packages = await Package.findById(barber).sort({
       date: -1,
     });
     res.json(packages);
@@ -81,7 +81,7 @@ router.get("/saloonPackages/:id", auth, async (req, res) => {
 router.get("/saloonCollections/:id", auth, async (req, res) => {
   try {
     const barber = req.params.id;
-    const collections = await Collection.find({ barber }).sort({
+    const collections = await Collection.findById(barber).sort({
       date: -1,
     });
     res.json(collections);
@@ -94,7 +94,7 @@ router.get("/saloonCollections/:id", auth, async (req, res) => {
 router.get("/saloonReviews/:id", auth, async (req, res) => {
   try {
     const barber = req.params.id;
-    const reviews = await Review.find({ barber }).sort({
+    const reviews = await Review.findById(barber).sort({
       date: -1,
     });
     res.json(reviews);
@@ -107,7 +107,7 @@ router.get("/saloonReviews/:id", auth, async (req, res) => {
 router.get("/saloonServices/:id", auth, async (req, res) => {
   try {
     const barber = req.params.id;
-    const services = await Service.find({ barber }).sort({
+    const services = await Service.findById(barber).sort({
       date: -1,
     });
     res.json(services);
