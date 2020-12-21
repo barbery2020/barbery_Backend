@@ -33,10 +33,8 @@ const AppointmentSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "barber",
   },
-  services: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: "service",
-  },
+  services: [{ type: mongoose.Schema.Types.ObjectId, ref: "service" }],
+  // ref: "service",
 });
 
 module.exports = mongoose.model("appointment", AppointmentSchema);

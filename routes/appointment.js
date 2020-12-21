@@ -5,6 +5,8 @@ const UserAuth = require("../middleware/auth");
 const { check, validationResult } = require("express-validator");
 
 const Appointment = require("../models/Appointment");
+const Service = require("../models/Service");
+const Package = require("../models/Package");
 
 // @route   GET api/appointment
 // @desc    Get a barbers all appointment
@@ -13,11 +15,61 @@ const Appointment = require("../models/Appointment");
 router.get("/user", UserAuth, async (req, res) => {
   try {
     const user = req.user.id;
-    const appointments = await Appointment.find({ user })
+    let appointments = await Appointment.find({ user })
       .sort({
         date: -1,
       })
-      .populate("specialist");
+      .populate("specialist")
+      .populate("services");
+    // let services = [];
+
+    // appointments = await Promise.all(
+    //   await new Promise((resolve, reject) => {
+    //     resolve(
+    //       appointments.map(async (val) => {
+    //         let services = await val.services.map(
+    //           async (val) => await Service.findById(val)
+    //         );
+    //         return {
+    //           _id: val._id,
+    //           promo: val.promo,
+    //           bill: val.bill,
+    //           timing: val.timing,
+    //           date: val.date,
+    //           status: val.status,
+    //           services,
+    //           specialist: val.specialist,
+    //           barber: val.barber,
+    //         };
+    //       })
+    //     );
+    //   })
+    // );
+    // appointments = await Promise.all(
+    //   appointments.map(async (val) => {
+    //     return new Promise(async (resolve, reject) => {
+    //       const service = val.services;
+    //       services = await Promise.all(
+    //         service.map((val) => {
+    //           return Service.findById(val.toString());
+    //         })
+    //       );
+    //       console.log(services);
+    //       resolve({
+    //         _id: val._id,
+    //         promo: val.promo,
+    //         bill: val.bill,
+    //         timing: val.timing,
+    //         date: val.date,
+    //         status: val.status,
+    //         services,
+    //         specialist: val.specialist,
+    //         barber: val.barber,
+    //       });
+    //     });
+    //   })
+    // );
+    // .populate(["service"]);
     res.json(appointments);
   } catch (err) {
     console.error(err.message);
