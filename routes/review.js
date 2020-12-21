@@ -26,7 +26,7 @@ router.post(
   [
     UserAuth,
     [
-      check("review", "review can't be empty").not().isEmpty(),
+      check("userReview", "review can't be empty").not().isEmpty(),
       check("stars", "Please stars to give review").not().isEmpty(),
     ],
   ],

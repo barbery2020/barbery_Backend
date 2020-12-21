@@ -7,13 +7,9 @@ const ReviewSchema = mongoose.Schema({
   stars: {
     type: String,
   },
-  appointmentId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "appointment",
-  },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
+  date: {
+    type: Date,
+    default: Date.now,
   },
 });
 

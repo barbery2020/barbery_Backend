@@ -34,6 +34,10 @@ const AppointmentSchema = mongoose.Schema({
     ref: "barber",
   },
   services: [{ type: mongoose.Schema.Types.ObjectId, ref: "service" }],
+  review: {
+    type: mongoose.Schema.Types.ObjectId,
+    default: null,
+  },
   // ref: "service",
 });
 

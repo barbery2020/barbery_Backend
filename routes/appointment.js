@@ -7,6 +7,7 @@ const { check, validationResult } = require("express-validator");
 const Appointment = require("../models/Appointment");
 const Service = require("../models/Service");
 const Package = require("../models/Package");
+const Review = require("../models/Review");
 
 // @route   GET api/appointment
 // @desc    Get a barbers all appointment
@@ -139,6 +140,57 @@ router.post(
       res.json(appointment);
     } catch (err) {
       console.log(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+router.post(
+  "/review/:id",
+  [
+    UserAuth,
+    [
+      check("userReview", "review can't be empty").not().isEmpty(),
+      check("stars", "Please stars to give review").not().isEmpty(),
+    ],
+  ],
+  async (req, res) => {
+    try {
+      let appointment = await Appointment.findById(req.params.id);
+
+      if (!appointment)
+        return res.status(404).json({ msg: "Appointment not found" });
+
+      // Make sure user owns appointment
+      if (appointment.user.toString() !== req.user.id) {
+        return res.status(401).json({ msg: "Not authorized" });
+      }
+
+      if (appointment.review !== null) {
+        return res.status(400).json({ msg: "already reviewed" });
+      }
+
+      const { userReview, stars } = req.body;
+
+      const newReview = new Review({
+        userReview,
+        stars,
+      });
+      const review = await newReview.save();
+      // res.json(review);
+
+      let appointmentFields = {};
+
+      appointmentFields.review = review;
+
+      appointment = await Appointment.findByIdAndUpdate(
+        req.params.id,
+        { $set: appointmentFields },
+        { new: true }
+      );
+      res.json(appointment);
+    } catch (err) {
+      console.error(err.message);
       res.status(500).send("Server Error");
     }
   }
