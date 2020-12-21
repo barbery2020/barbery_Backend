@@ -13,9 +13,11 @@ const Appointment = require("../models/Appointment");
 router.get("/user", UserAuth, async (req, res) => {
   try {
     const user = req.user.id;
-    const appointments = await Appointment.find({ user }).sort({
-      date: -1,
-    });
+    const appointments = await Appointment.find({ user })
+      .sort({
+        date: -1,
+      })
+      .populate("specialist");
     res.json(appointments);
   } catch (err) {
     console.error(err.message);
