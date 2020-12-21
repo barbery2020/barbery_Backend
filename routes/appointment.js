@@ -10,9 +10,9 @@ const Appointment = require("../models/Appointment");
 // @desc    Get a barbers all appointment
 // @access  Private
 
-router.get("/user/:id", UserAuth, async (req, res) => {
+router.get("/user", UserAuth, async (req, res) => {
   try {
-    const user = req.params.id;
+    const user = req.user.id;
     const appointments = await Appointment.find({ user }).sort({
       date: -1,
     });
@@ -23,7 +23,7 @@ router.get("/user/:id", UserAuth, async (req, res) => {
   }
 });
 
-router.get("/", barberAuth, async (req, res) => {
+router.get("/barber", barberAuth, async (req, res) => {
   try {
     const barber = req.barber.id;
     const appointments = await Appointment.find({ barber }).sort({

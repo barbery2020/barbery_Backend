@@ -42,7 +42,11 @@ router.get("/allSaloons", auth, async (req, res) => {
 router.get("/barber/:id", auth, async (req, res) => {
   try {
     const id = req.params.id;
-    const barber = await Barber.find({ id }); //exclude password
+    console.log(id);
+    const barber = await Barber.find({ id }).sort({
+      date: -1,
+    }); //exclude password
+    console.log(barber);
     res.json(barber);
   } catch (err) {
     console.log(err.message);
