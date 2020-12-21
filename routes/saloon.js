@@ -6,6 +6,7 @@ const Service = require("../models/Service");
 const Specialist = require("../models/Specialist");
 const Collection = require("../models/Collection");
 const Review = require("../models/Review");
+const Package = require("../models/Package");
 
 // @route   POST api/users
 // @desc    Register a user
