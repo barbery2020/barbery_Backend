@@ -221,7 +221,12 @@ router.put("/:id", barberAuth, async (req, res) => {
       req.params.id,
       { $set: appointmentFields },
       { new: true }
-    );
+    )
+      .populate("specialist", "picture name")
+      .populate("services", "name cost")
+      .populate("review")
+      .populate("user", "firstName lastName image");
+
     res.json(appointment);
   } catch (err) {
     console.error(err.message);
