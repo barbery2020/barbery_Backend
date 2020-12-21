@@ -2,12 +2,12 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
 const Barber = require("../models/Barber");
-const User = require("../models/User");
 const Service = require("../models/Service");
 const Specialist = require("../models/Specialist");
 const Collection = require("../models/Collection");
 const Review = require("../models/Review");
 const Package = require("../models/Package");
+const Appointment = require("../models/Appointment");
 
 // @route   POST api/users
 // @desc    Register a user
@@ -48,6 +48,25 @@ router.get("/barber/:id", async (req, res) => {
     res.json(barber);
   } catch (err) {
     console.log(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+router.get("/review/barber/:id", auth, async (req, res) => {
+  try {
+    const barber = req.params.id;
+    const appointments = await Appointment.find({ barber })
+      .where("review")
+      .ne(null)
+      .select("user review date")
+      .sort({
+        date: -1,
+      })
+      .populate("user", "firstName lastName image")
+      .populate("review");
+    res.json(appointments);
+  } catch (err) {
+    console.error(err.message);
     res.status(500).send("Server Error");
   }
 });
