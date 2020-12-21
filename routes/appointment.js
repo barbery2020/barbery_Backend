@@ -9,6 +9,20 @@ const Appointment = require("../models/Appointment");
 // @route   GET api/appointment
 // @desc    Get a barbers all appointment
 // @access  Private
+
+router.get("/user/:id", UserAuth, async (req, res) => {
+  try {
+    const user = req.params.id;
+    const appointments = await Appointment.find({ user }).sort({
+      date: -1,
+    });
+    res.json(appointments);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 router.get("/", barberAuth, async (req, res) => {
   try {
     const barber = req.barber.id;

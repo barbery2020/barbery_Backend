@@ -38,6 +38,17 @@ router.get("/allSaloons", auth, async (req, res) => {
   }
 });
 
+router.get("/barber/:id", auth, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const barber = await Barber.find({ id }); //exclude password
+    res.json(barber);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 router.get("/saloonSpecialist/:id", auth, async (req, res) => {
   try {
     const barber = req.params.id;
