@@ -91,10 +91,10 @@ router.get("/records", async (req, res) => {
       if (appointmentRecords[i].status !== false) {
         appointmentCompleted++;
       } else {
+        totalRevenue += appointmentRecords[i].bill;
         appointmentPending++;
       }
       console.log(appointmentRecords[i].bill);
-      totalRevenue += appointmentRecords[i].bill;
     }
     res.status(200).json([
       { title: "Total Clients", totalClients: totalClients },
