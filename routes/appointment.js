@@ -158,9 +158,9 @@ router.post(
         .populate("specialist", "picture name")
         .populate("user", "firstName lastName image");
 
-      // pusher.trigger(barber.toString(), "appointment", {
-      //   appointment: push,
-      // });
+      pusher.trigger("notification", "appointment", {
+        appointment: push,
+      });
       res.json(appointment);
     } catch (err) {
       console.log(err.message);
@@ -215,9 +215,9 @@ router.post(
         .populate("user", "firstName lastName image")
         .populate("review");
 
-      // pusher.trigger(appointment.barber.toString(), "review", {
-      //   appointment,
-      // });
+      pusher.trigger("notification", "review", {
+        appointment,
+      });
       res.json(review);
     } catch (err) {
       console.error(err.message);
@@ -251,15 +251,14 @@ router.put("/:id", barberAuth, async (req, res) => {
       .populate("review")
       .populate("user", "firstName lastName image");
 
-    pusher.trigger(appointment.user.toString(), "appointmentStatus", {
+    pusher.trigger("notification", "appointmentStatus", {
       appointment,
     });
 
     res.json(appointment);
   } catch (err) {
     console.error(err.message);
-    // res.status(500).send("Server Error");
-    res.status(200).json({ message: err.message });
+    res.status(500).send("Server Error");
   }
 });
 
