@@ -259,7 +259,7 @@ router.put("/:id", barberAuth, async (req, res) => {
   } catch (err) {
     console.error(err.message);
     // res.status(500).send("Server Error");
-    res.status(200).json({ msg: err.message });
+    res.status(500).json({ msg: err.message });
   }
 });
 
