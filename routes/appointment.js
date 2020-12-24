@@ -153,7 +153,7 @@ router.post(
         user: req.user.id,
       });
       const appointment = await newAppointment.save();
-      pusher.trigger("my-channel", "my-event", {
+      pusher.trigger(barber, "appointment", {
         appointment,
       });
       res.json(appointment);
@@ -207,6 +207,9 @@ router.post(
         { $set: appointmentFields },
         { new: true }
       );
+      pusher.trigger(appointment.barber, "review", {
+        appointment,
+      });
       res.json(review);
     } catch (err) {
       console.error(err.message);
@@ -239,6 +242,10 @@ router.put("/:id", barberAuth, async (req, res) => {
       .populate("services", "name cost")
       .populate("review")
       .populate("user", "firstName lastName image");
+
+    pusher.trigger(appointment.user, "appointmentStatus", {
+      appointment,
+    });
 
     res.json(appointment);
   } catch (err) {
