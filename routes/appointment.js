@@ -9,6 +9,16 @@ const Service = require("../models/Service");
 const Package = require("../models/Package");
 const Review = require("../models/Review");
 
+const Pusher = require("pusher");
+
+const pusher = new Pusher({
+  appId: "1128411",
+  key: "c40fc88b49979eb832b7",
+  secret: "6404dd0fd28770cad6ef",
+  cluster: "ap2",
+  useTLS: true,
+});
+
 // @route   GET api/appointment
 // @desc    Get a barbers all appointment
 // @access  Private
@@ -143,6 +153,9 @@ router.post(
         user: req.user.id,
       });
       const appointment = await newAppointment.save();
+      pusher.trigger("my-channel", "my-event", {
+        appointment,
+      });
       res.json(appointment);
     } catch (err) {
       console.log(err.message);
