@@ -153,8 +153,13 @@ router.post(
         user: req.user.id,
       });
       const appointment = await newAppointment.save();
+      const push = Appointment.findById(appointment._id)
+        .populate("services", "name cost")
+        .populate("specialist", "picture name")
+        .populate("user", "firstName lastName image");
+
       pusher.trigger(barber, "appointment", {
-        appointment,
+        appointment: push,
       });
       res.json(appointment);
     } catch (err) {
@@ -206,7 +211,10 @@ router.post(
         req.params.id,
         { $set: appointmentFields },
         { new: true }
-      );
+      )
+        .populate("user", "firstName lastName image")
+        .populate("review");
+
       pusher.trigger(appointment.barber, "review", {
         appointment,
       });
