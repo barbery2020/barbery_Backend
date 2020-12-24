@@ -251,9 +251,9 @@ router.put("/:id", barberAuth, async (req, res) => {
       .populate("review")
       .populate("user", "firstName lastName image");
 
-    // pusher.trigger(appointment.user.toString(), "appointmentStatus", {
-    //   appointment,
-    // });
+    pusher.trigger(appointment.user.toString(), "appointmentStatus", {
+      appointment,
+    });
 
     res.json(appointment);
   } catch (err) {
