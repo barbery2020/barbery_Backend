@@ -55,6 +55,10 @@ const BarberSchema = mongoose.Schema({
     type: String,
     default: "",
   },
+  status: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 module.exports = mongoose.model("barber", BarberSchema);

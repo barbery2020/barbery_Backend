@@ -37,10 +37,13 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password } = req.body;
+    const { email, password, status } = req.body;
 
     try {
       let barber = await Barber.findOne({ email });
+      if (status === false) {
+        return res.status(401).json({ msg: "Denied Access" });
+      }
 
       if (!barber) {
         return res.status(400).json({ msg: "Invalid Credentials" });

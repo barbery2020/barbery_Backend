@@ -113,4 +113,76 @@ router.get("/records", async (req, res) => {
   }
 });
 
+router.put("/barber/:id", async (req, res) => {
+  const { status } = req.body;
+  const barberFields = {};
+  if (status !== undefined) barberFields.status = status;
+  try {
+    let barber = await Barber.findById(req.params.id);
+
+    if (!barber) return res.status(404).json({ msg: "Barber not found" });
+
+    // Make sure barber owns barber
+    if (barber.barber.toString() !== req.barber.id) {
+      return res.status(401).json({ msg: "Not authorized" });
+    }
+
+    barber = await Barber.findByIdAndUpdate(
+      req.params.id,
+      { $set: barberFields },
+      { new: true }
+    );
+    //   .populate("specialist", "picture name")
+    //   .populate("services", "name cost")
+    //   .populate("review")
+    //   .populate("user", "firstName lastName image");
+
+    // pusher.trigger("notification", "appointmentStatus", {
+    //   barber,
+    // });
+
+    res.json(barber);
+  } catch (err) {
+    console.error(err.message);
+    // res.status(500).send("Server Error");
+    res.status(500).json({ msg: err.message });
+  }
+});
+
+router.put("/user/:id", async (req, res) => {
+  const { status } = req.body;
+  const userFields = {};
+  if (status !== undefined) userFields.status = status;
+  try {
+    let user = await User.findById(req.params.id);
+
+    if (!user) return res.status(404).json({ msg: "User not found" });
+
+    // Make sure user owns user
+    if (user.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: "Not authorized" });
+    }
+
+    user = await User.findByIdAndUpdate(
+      req.params.id,
+      { $set: userFields },
+      { new: true }
+    );
+    //   .populate("specialist", "picture name")
+    //   .populate("services", "name cost")
+    //   .populate("review")
+    //   .populate("user", "firstName lastName image");
+
+    // pusher.trigger("notification", "appointmentStatus", {
+    //   user,
+    // });
+
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    // res.status(500).send("Server Error");
+    res.status(500).json({ msg: err.message });
+  }
+});
+
 module.exports = router;

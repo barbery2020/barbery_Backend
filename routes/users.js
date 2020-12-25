@@ -107,4 +107,14 @@ router.put("/", auth, async (req, res) => {
   }
 });
 
+router.get("/", async (req, res) => {
+  try {
+    const user = await User.find().select("-password"); //exclude password
+    res.json(user);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = router;
