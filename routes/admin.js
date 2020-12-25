@@ -116,8 +116,7 @@ router.get("/records", async (req, res) => {
 router.put("/barber/:id", async (req, res) => {
   const { status } = req.body;
   const barberFields = {};
-  if (status === true) barberFields.status = false;
-  else barberFields.status = true;
+  if (status !== undefined) barberFields.status = status;
   try {
     let barber = await Barber.findById(req.params.id);
 
@@ -153,8 +152,7 @@ router.put("/barber/:id", async (req, res) => {
 router.put("/user/:id", async (req, res) => {
   const { status } = req.body;
   const userFields = {};
-  if (status === true) userFields.status = false;
-  else userFields.status = true;
+  if (status !== undefined) userFields.status = status;
   try {
     let user = await User.findById(req.params.id);
 
