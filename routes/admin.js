@@ -116,16 +116,17 @@ router.get("/records", async (req, res) => {
 router.put("/barber/:id", async (req, res) => {
   const { status } = req.body;
   const barberFields = {};
-  if (status !== undefined) barberFields.status = status;
+  if (status === true) barberFields.status = false;
+  else barberFields.status = true;
   try {
     let barber = await Barber.findById(req.params.id);
 
     if (!barber) return res.status(404).json({ msg: "Barber not found" });
 
     // Make sure barber owns barber
-    if (barber.barber.toString() !== req.barber.id) {
-      return res.status(401).json({ msg: "Not authorized" });
-    }
+    // if (barber.barber.toString() !== req.barber.id) {
+    //   return res.status(401).json({ msg: "Not authorized" });
+    // }
 
     barber = await Barber.findByIdAndUpdate(
       req.params.id,
@@ -152,16 +153,17 @@ router.put("/barber/:id", async (req, res) => {
 router.put("/user/:id", async (req, res) => {
   const { status } = req.body;
   const userFields = {};
-  if (status !== undefined) userFields.status = status;
+  if (status === true) barberFields.status = false;
+  else barberFields.status = true;
   try {
     let user = await User.findById(req.params.id);
 
     if (!user) return res.status(404).json({ msg: "User not found" });
 
     // Make sure user owns user
-    if (user.user.toString() !== req.user.id) {
-      return res.status(401).json({ msg: "Not authorized" });
-    }
+    // if (user._id.toString() !== req.user.id) {
+    //   return res.status(401).json({ msg: "Not authorized" });
+    // }
 
     user = await User.findByIdAndUpdate(
       req.params.id,
