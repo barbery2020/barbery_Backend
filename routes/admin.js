@@ -153,8 +153,8 @@ router.put("/barber/:id", async (req, res) => {
 router.put("/user/:id", async (req, res) => {
   const { status } = req.body;
   const userFields = {};
-  if (status === true) barberFields.status = false;
-  else barberFields.status = true;
+  if (status === true) userFields.status = false;
+  else userFields.status = true;
   try {
     let user = await User.findById(req.params.id);
 
